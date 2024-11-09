@@ -1,3 +1,4 @@
+.import my_mul.s
 .globl read_matrix
 
 .text
@@ -35,7 +36,7 @@
 #   Caller is responsible for freeing returned matrix pointer
 # ==============================================================================
 read_matrix:
-    
+
     # Prologue
     addi sp, sp, -40
     sw ra, 0(sp)
@@ -44,6 +45,7 @@ read_matrix:
     sw s2, 12(sp)
     sw s3, 16(sp)
     sw s4, 20(sp)
+
 
     mv s3, a1         # save and copy rows
     mv s4, a2         # save and copy cols
@@ -74,6 +76,10 @@ read_matrix:
     sw t1, 0(s3)     # saves num rows
     sw t2, 0(s4)     # saves num cols
 
+    mv a0, t1
+    mv a1, t2
+    jal my_mul
+    mv s1, a0        # s1 is number of elements
     # mul s1, t1, t2   # s1 is number of elements
     # FIXME: Replace 'mul' with your own implementation
 

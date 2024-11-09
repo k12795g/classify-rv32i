@@ -6,6 +6,7 @@
 .import argmax.s
 .import utils.s
 .import classify.s
+.import my_mul.s
 
 .globl main
 # =================================================================

@@ -23,13 +23,24 @@
 #   Result: [ 0, 0, 3,  0, 5]
 # ==============================================================================
 relu:
-    li t0, 1             
-    blt a1, t0, error     
-    li t1, 0             
+    li t0, 1
+    blt a1, t0, error
+    li t1, 0
 
+    addi t4, a0, 0
 loop_start:
-    # TODO: Add your own implementation
+    lw t2, 0(t4)
+    bgt t2,x0 ReLUEnd
+    addi t2, x0, 0
+
+ReLUEnd:
+    sw t2, 0(t4)
+    addi t1, t1, 1
+    addi t4, t4, 4
+    blt t1, a1, loop_start
+    jr ra
+
 
 error:
-    li a0, 36          
-    j exit          
+    li a0, 36
+    j exit

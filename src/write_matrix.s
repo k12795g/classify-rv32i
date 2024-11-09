@@ -1,12 +1,13 @@
+.import my_mul.s
 .globl write_matrix
 
 .text
 # ==============================================================================
 # FUNCTION: Write a matrix of integers to a binary file
 # FILE FORMAT:
-#   - The first 8 bytes store two 4-byte integers representing the number of 
+#   - The first 8 bytes store two 4-byte integers representing the number of
 #     rows and columns, respectively.
-#   - Each subsequent 4-byte segment represents a matrix element, stored in 
+#   - Each subsequent 4-byte segment represents a matrix element, stored in
 #     row-major order.
 #
 # Arguments:
@@ -63,6 +64,10 @@ write_matrix:
 
     # mul s4, s2, s3   # s4 = total elements
     # FIXME: Replace 'mul' with your own implementation
+    mv a0, s2
+    mv a1, s3
+    jal my_mul
+    mv s4, a0        # s4 = total elements
 
     # write matrix data to file
     mv a0, s0
