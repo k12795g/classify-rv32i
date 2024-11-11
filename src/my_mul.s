@@ -2,39 +2,51 @@
 
 .text
 my_mul:
-    bge a0, x0, postive_a0
-    bge a1, x0, postive_a1
-    j no_postive
+    addi sp, sp, -20
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
+    sw s3, 16(sp)
+
+    bge a0, x0, positive_a0
+    bge a1, x0, positive_a1
+    j no_positive
 
 
-postive_a0:
-    addi t1, a0, 0
-    addi t0, a1, 0
+positive_a0:
+    addi s1, a0, 0
+    addi s0, a1, 0
     j mul_main
 
-
-postive_a1:
-    addi t1, a1, 0
-    addi t0, a0, 0
+positive_a1:
+    addi s1, a1, 0
+    addi s0, a0, 0
     j mul_main
 
-
-no_postive:
-    sub t0, x0, a0
-    sub t1, x0, a1
+no_positive:
+    sub s0, x0, a0
+    sub s1, x0, a1
     j mul_main
 
 mul_main:
-    li t2, 0 # inner loop counter
-    li t3, 0 # result
-
-
+    li s2, 0 # inner loop counter
+    li s3, 0 # result
 
 mul_loop:
-    # result => t0 * t1 times
-    add t3, t3, t0
-    addi t2, t2, 1
-    bne t2, t1, mul_loop
+    # result => s0 * s1 times
+    beq s2, s1, mul_loop_end
+    add s3, s3, s0
+    addi s2, s2, 1
+    j mul_loop
 mul_loop_end:
-    mv a0, t3
+    mv a0, s3
+
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    lw s3, 16(sp)
+    addi sp, sp, 20
+
     jr ra

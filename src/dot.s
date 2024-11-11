@@ -56,7 +56,8 @@ loop_start:
     bge s1, s4, loop_end
     lw a0, 0(s2)
     lw a1, 0(s3)
-    jal my_mul
+    # jal my_mul
+    mul a0, a0, a1
     add s0, s0, a0
 
     add s2, s2, s5
