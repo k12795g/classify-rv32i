@@ -24,9 +24,7 @@
 argmax:
     li t6, 1
     blt a1, t6, handle_error
-
     lw t0, 0(a0)
-
     addi t1, a0, 4
     li t2, 1
     li t4, 0
@@ -40,8 +38,6 @@ no_update_max:
     addi t2, t2, 1
     addi t1, t1, 4
     j loop_start
-
-
 loop_end:
     mv a0, t4
     jr ra
