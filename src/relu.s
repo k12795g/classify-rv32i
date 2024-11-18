@@ -26,15 +26,13 @@ relu:
     li t0, 1
     blt a1, t0, error
     li t1, 0
-
     addi t4, a0, 0
 loop_start:
     lw t2, 0(t4)
     bgt t2,x0 ReLUEnd
     addi t2, x0, 0
-
-ReLUEnd:
     sw t2, 0(t4)
+ReLUEnd:
     addi t1, t1, 1
     addi t4, t4, 4
     blt t1, a1, loop_start
