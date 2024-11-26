@@ -2,6 +2,83 @@
 ## All Pass Screenshot
 ![alt text](image-1.png)
 
+## my_mal.s
+
+### Description
+
+A custom function for performing multiplication.
+
+### Usage
+
+- **Input Parameter**:
+  - `a0` : Multiplicand
+  - `a1` : Multiplier
+- **Return Value**:
+  - `a0` : Output value
+
+### Detailed Steps
+
+1. Determine the sign relationship of `a0` and `a1`.
+2. Use the positive number as the loop counter. If neither is positive, reverse the signs of both numbers and set one of them as the loop counter.
+3. Perform the addition operation for the remaining number `loop times`.
+
+### Exaples
+
+- Input `-5`, `3`, output `-15`.
+- Input `-2`, `-7`, output `14`.
+
+### Related Code
+```
+my_mul:
+    addi sp, sp, -20
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
+    sw s3, 16(sp)
+
+    bge a0, x0, positive_a0
+    bge a1, x0, positive_a1
+    j no_positive
+
+positive_a0:
+    addi s1, a0, 0
+    addi s0, a1, 0
+    j mul_main
+
+positive_a1:
+    addi s1, a1, 0
+    addi s0, a0, 0
+    j mul_main
+
+no_positive:
+    sub s0, x0, a0
+    sub s1, x0, a1
+    j mul_main
+
+mul_main:
+    li s2, 0 # inner loop counter
+    li s3, 0 # result
+
+mul_loop:
+    # result => s0 * s1 times
+    beq s2, s1, mul_loop_end
+    add s3, s3, s0
+    addi s2, s2, 1
+    j mul_loop
+    
+mul_loop_end:
+    mv a0, s3
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    lw s3, 16(sp)
+    addi sp, sp, 20
+
+    jr ra
+```
+
 ## abs.s
 
 ### Description
@@ -344,3 +421,6 @@ error:
     li a0, 38
     j exit
 ```
+
+## Other
+The modifications to these three programs (`classify.s`, `read_matrix.s`, `write_matrix.s`) only involve replacing the mul instruction with a call to the custom Mul function(`my_mal.s`).
