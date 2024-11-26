@@ -242,16 +242,16 @@ loop_end:
   - None. The result matrix is populated in-place.
 
 ### Detailed Steps
+1. Perform parameter validation and initialize `s0` and `s1` as counters for the outer and inner loops, respectively.
+2. In the outer loop, move the starting row of `M0` for each iteration.
+3. In the inner loop, use different columns of `M1` to compute the dot product with the same row from the outer loop, producing all results for one row of `D`.
+4. Store the computed values in `s2`, which corresponds to the respective location in `D`.
 
-1. Initialize pointers and counters for iterating through the matrices.
-2. Use nested loops to compute the dot product for each element in the result matrix:
-   - For each row in the first matrix and each column in the second matrix, calculate the sum of products.
-   - Store the computed value in the corresponding position in the result matrix.
-3. Return from the function.
 
 ### Examples
 
 - Multiply a 2x3 matrix with a 3x2 matrix to get a 2x2 result matrix.
+- Perform a dot product between row 1 of `M0` and column 1 of `M1` to obtain the value for row 1, column 1 of `D`.
 
 ### Related Code
 
@@ -287,7 +287,6 @@ outer_loop_start:
     li s1, 0
     mv s4, a3
     blt s0, a1, inner_loop_start
-
     j outer_loop_end
 
 inner_loop_start:
@@ -304,9 +303,7 @@ inner_loop_start:
     mv a1, s4 # setting pointer for Matrix B into the correct argument value
     li a3, 1 # stride for matrix A
     mv a4, a5 # stride for matrix B
-
     jal dot
-
     mv s6, a0 # storing result of the dot product into s6
 
     lw a0, 0(sp)
@@ -319,19 +316,15 @@ inner_loop_start:
 
     sw s6, 0(s2)
     addi s2, s2, 4 # Incrememtning pointer for result matrix
-
     li t1, 4
     add s4, s4, t1 # incrememtning the column on Matrix B
-
     addi s1, s1, 1
     j inner_loop_start
 
 inner_loop_end:
     slli s6, a2, 2
     add s3, s3, s6
-
     addi s0, s0, 1
-
     j outer_loop_start
 
 outer_loop_end:
@@ -345,7 +338,6 @@ outer_loop_end:
     lw s5, 24(sp)
     lw s6, 28(sp)
     addi sp, sp, 32
-
     jr ra
 
 error:
